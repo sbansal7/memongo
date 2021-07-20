@@ -12,7 +12,7 @@ import (
 )
 
 func TestDefaultOptions(t *testing.T) {
-	versions := []string{"3.2.22", "3.4.21", "3.6.13", "4.0.13", "4.2.1"}
+	versions := []string{"4.0.13", "4.2.1", "4.4.0"}
 
 	for _, version := range versions {
 		t.Run(version, func(t *testing.T) {
