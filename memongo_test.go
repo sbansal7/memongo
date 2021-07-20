@@ -1,10 +1,11 @@
-package memongo
+package memongo_test
 
 import (
 	"context"
 	"testing"
 
-	"github.com/benweissmann/memongo/memongolog"
+	"github.com/tryvium-travels/memongo"
+	"github.com/tryvium-travels/memongo/memongolog"
 
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,11 +13,11 @@ import (
 )
 
 func TestDefaultOptions(t *testing.T) {
-	versions := []string{"3.2.22", "3.4.21", "3.6.13", "4.0.13", "4.2.1"}
+	versions := []string{"3.2.22", "3.4.21", "3.6.13"}
 
 	for _, version := range versions {
 		t.Run(version, func(t *testing.T) {
-			server, err := StartWithOptions(&Options{
+			server, err := memongo.StartWithOptions(&memongo.Options{
 				MongoVersion: version,
 				LogLevel:     memongolog.LogLevelDebug,
 			})

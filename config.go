@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/benweissmann/memongo/memongolog"
-	"github.com/benweissmann/memongo/mongobin"
+	"github.com/tryvium-travels/memongo/memongolog"
+	"github.com/tryvium-travels/memongo/mongobin"
 )
 
 // Options is the configuration options for a launched MongoDB binary

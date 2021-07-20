@@ -14,14 +14,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/benweissmann/memongo/memongolog"
 	"github.com/spf13/afero"
+	"github.com/tryvium-travels/memongo/memongolog"
 )
 
-var afs afero.Afero
+var Afs afero.Afero
 
 func init() {
-	afs = afero.Afero{
+	Afs = afero.Afero{
 		Fs: afero.NewOsFs(),
 	}
 }
@@ -40,7 +40,7 @@ func GetOrDownloadMongod(urlStr string, cachePath string, logger *memongolog.Log
 	mongodPath := path.Join(dirPath, "mongod")
 
 	// Check the cache
-	existsInCache, existsErr := afs.Exists(mongodPath)
+	existsInCache, existsErr := Afs.Exists(mongodPath)
 	if existsErr != nil {
 		return "", fmt.Errorf("error while checking for mongod in cache: %s", existsErr)
 	}
@@ -60,13 +60,13 @@ func GetOrDownloadMongod(urlStr string, cachePath string, logger *memongolog.Log
 	}
 	defer resp.Body.Close()
 
-	tgzTempFile, tmpFileErr := afs.TempFile("", "")
+	tgzTempFile, tmpFileErr := Afs.TempFile("", "")
 	if tmpFileErr != nil {
 		return "", fmt.Errorf("error creating temp file for tarball: %s", tmpFileErr)
 	}
 	defer func() {
 		_ = tgzTempFile.Close()
-		_ = afs.Remove(tgzTempFile.Name())
+		_ = Afs.Remove(tgzTempFile.Name())
 	}()
 
 	_, copyErr := io.Copy(tgzTempFile, resp.Body)
@@ -101,14 +101,14 @@ func GetOrDownloadMongod(urlStr string, cachePath string, logger *memongolog.Log
 		}
 	}
 
-	mkdirErr := afs.MkdirAll(path.Dir(mongodPath), 0755)
+	mkdirErr := Afs.MkdirAll(path.Dir(mongodPath), 0755)
 	if mkdirErr != nil {
 		return "", fmt.Errorf("error creating directory %s: %s", path.Dir(mongodPath), mkdirErr)
 	}
 
 	// Extract to a temp file first, then copy to the destination, so we get
 	// atomic behavior if there's multiple parallel downloaders
-	mongodTmpFile, tmpFileErr := afs.TempFile("", "")
+	mongodTmpFile, tmpFileErr := Afs.TempFile("", "")
 	if tmpFileErr != nil {
 		return "", fmt.Errorf("error creating temp file for mongod: %s", tmpFileErr)
 	}
@@ -123,12 +123,12 @@ func GetOrDownloadMongod(urlStr string, cachePath string, logger *memongolog.Log
 
 	_ = mongodTmpFile.Close()
 
-	chmodErr := afs.Chmod(mongodTmpFile.Name(), 0755)
+	chmodErr := Afs.Chmod(mongodTmpFile.Name(), 0755)
 	if chmodErr != nil {
 		return "", fmt.Errorf("error chmod-ing mongodb binary at %s: %s", mongodTmpFile, chmodErr)
 	}
 
-	renameErr := afs.Rename(mongodTmpFile.Name(), mongodPath)
+	renameErr := Afs.Rename(mongodTmpFile.Name(), mongodPath)
 	if renameErr != nil {
 		return "", fmt.Errorf("error writing mongod binary from %s to %s: %s", mongodTmpFile.Name(), mongodPath, renameErr)
 	}
