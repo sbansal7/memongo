@@ -10,10 +10,10 @@ import (
 )
 
 // We define these as package vars so we can override it in tests
-var etcOsRelease = "/etc/os-release"
-var etcRedhatRelease = "/etc/redhat-release"
-var goOS = runtime.GOOS
-var goArch = runtime.GOARCH
+var EtcOsRelease = "/etc/os-release"
+var EtcRedhatRelease = "/etc/redhat-release"
+var GoOS = runtime.GOOS
+var GoArch = runtime.GOARCH
 
 // DownloadSpec specifies what copy of MongoDB to download
 type DownloadSpec struct {
@@ -127,39 +127,39 @@ func parseVersion(version string) ([]int, error) {
 }
 
 func detectPlatform() (string, error) {
-	switch goOS {
+	switch GoOS {
 	case "darwin":
 		return "osx", nil
 	case "linux":
 		return "linux", nil
 	default:
-		return "", &UnsupportedSystemError{msg: "your platform, " + goOS + ", is not supported"}
+		return "", &UnsupportedSystemError{msg: "your platform, " + GoOS + ", is not supported"}
 	}
 }
 
 func detectArch() (string, error) {
-	switch goArch {
+	switch GoArch {
 	case "amd64":
 		return "x86_64", nil
 	default:
-		return "", &UnsupportedSystemError{msg: "your architecture, " + goArch + ", is not supported"}
+		return "", &UnsupportedSystemError{msg: "your architecture, " + GoArch + ", is not supported"}
 	}
 }
 
 func detectOSName(mongoVersion []int) string {
-	if goOS != "linux" {
+	if GoOS != "linux" {
 		// Not on Linux
 		return ""
 	}
 
-	osRelease, osReleaseErr := osrelease.ReadFile(etcOsRelease)
+	osRelease, osReleaseErr := osrelease.ReadFile(EtcOsRelease)
 	if osReleaseErr == nil {
 		return osNameFromOsRelease(osRelease, mongoVersion)
 	}
 
 	// We control etcRedhatRelease
 	//nolint:gosec
-	redhatRelease, redhatReleaseErr := ioutil.ReadFile(etcRedhatRelease)
+	redhatRelease, redhatReleaseErr := ioutil.ReadFile(EtcRedhatRelease)
 	if redhatReleaseErr == nil {
 		return osNameFromRedhatRelease(string(redhatRelease))
 	}
