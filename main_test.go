@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/benweissmann/memongo/memongolog"
+	"github.com/sbansal7/memongo/memongolog"
 
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,7 +12,7 @@ import (
 )
 
 func TestDefaultOptions(t *testing.T) {
-	versions := []string{"4.0.13", "4.2.1", "4.4.0"}
+	versions := []string{"4.4.0", "4.4.9", "5.0.0"}
 
 	for _, version := range versions {
 		t.Run(version, func(t *testing.T) {

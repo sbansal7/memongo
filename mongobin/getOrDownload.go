@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/benweissmann/memongo/memongolog"
+	"github.com/sbansal7/memongo/memongolog"
 	"github.com/spf13/afero"
 )
 

@@ -198,22 +198,17 @@ func osNameFromOsRelease(osRelease map[string]string, mongoVersion []int) string
 
 	switch id {
 	case "ubuntu":
-		if majorVersion >= 18 && versionGTE(mongoVersion, []int{4, 0, 1}) {
-			return "ubuntu1804"
-		}
-		if majorVersion >= 16 && versionGTE(mongoVersion, []int{3, 2, 7}) {
-			return "ubuntu1604"
-		}
-		if majorVersion >= 14 {
-			return "ubuntu1404"
-		}
+		return "ubuntu" + majorVersionString + "04"
 	case "sles":
 		if majorVersion >= 12 {
 			return "suse12"
 		}
-	case "rhel":
-		if majorVersion >= 7 {
+	case "rhel", "centos":
+		if majorVersion == 7 {
 			return "rhel70"
+		}
+		if majorVersion >= 8 {
+			return "rhel80"
 		}
 	case "debian":
 		if majorVersion >= 9 && versionGTE(mongoVersion, []int{3, 6, 5}) {

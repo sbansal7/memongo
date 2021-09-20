@@ -69,30 +69,6 @@ func TestMakeDownloadSpec(t *testing.T) {
 				OSName:         "ubuntu1804",
 			},
 		},
-		"ubuntu 18.04 older mongo": {
-			mongoVersion: "4.0.0",
-			etcFolder:    "ubuntu1804",
-
-			expectedSpec: &DownloadSpec{
-				Version:        "4.0.0",
-				Platform:       "linux",
-				SSLBuildNeeded: false,
-				Arch:           "x86_64",
-				OSName:         "ubuntu1604",
-			},
-		},
-		"ubuntu 18.04 much older mongo": {
-			mongoVersion: "3.2.6",
-			etcFolder:    "ubuntu1804",
-
-			expectedSpec: &DownloadSpec{
-				Version:        "3.2.6",
-				Platform:       "linux",
-				SSLBuildNeeded: false,
-				Arch:           "x86_64",
-				OSName:         "ubuntu1404",
-			},
-		},
 		"ubuntu 16.04": {
 			etcFolder: "ubuntu1604",
 
@@ -102,18 +78,6 @@ func TestMakeDownloadSpec(t *testing.T) {
 				SSLBuildNeeded: false,
 				Arch:           "x86_64",
 				OSName:         "ubuntu1604",
-			},
-		},
-		"ubuntu 16.04 older mongo": {
-			mongoVersion: "3.2.6",
-			etcFolder:    "ubuntu1604",
-
-			expectedSpec: &DownloadSpec{
-				Version:        "3.2.6",
-				Platform:       "linux",
-				SSLBuildNeeded: false,
-				Arch:           "x86_64",
-				OSName:         "ubuntu1404",
 			},
 		},
 		"ubuntu 14.04": {
@@ -136,6 +100,17 @@ func TestMakeDownloadSpec(t *testing.T) {
 				SSLBuildNeeded: false,
 				Arch:           "x86_64",
 				OSName:         "suse12",
+			},
+		},
+		"centos 8.2": {
+			etcFolder: "centos8",
+
+			expectedSpec: &DownloadSpec{
+				Version:        testMongoVersion,
+				Platform:       "linux",
+				SSLBuildNeeded: false,
+				Arch:           "x86_64",
+				OSName:         "rhel80",
 			},
 		},
 		"RHEL 7": {
@@ -276,17 +251,6 @@ func TestMakeDownloadSpec(t *testing.T) {
 		},
 		"Old SUSE": {
 			etcFolder: "old-sles",
-
-			expectedSpec: &DownloadSpec{
-				Version:        testMongoVersion,
-				Platform:       "linux",
-				SSLBuildNeeded: false,
-				Arch:           "x86_64",
-				OSName:         "",
-			},
-		},
-		"Old Ubuntu": {
-			etcFolder: "old-ubuntu",
 
 			expectedSpec: &DownloadSpec{
 				Version:        testMongoVersion,
